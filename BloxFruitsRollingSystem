@@ -1,0 +1,326 @@
+import java.util.*;
+public class BloxFruitsRollingSystem
+{
+    // aye, I want you to work on this try
+    static Scanner sc = new Scanner (System.in);
+
+    static final String[] TYPES = {"rocket", "ice", "magma", "buddha", "magnet", "kitsune", "dragon east", "dragon west"};
+
+    static String rollFruit(Random rn)
+    {
+        int randomNumber = rn.nextInt(1,6010);   // 1 to 6009
+        String fruit;
+
+        if (randomNumber >= 1 && randomNumber <= 2000)
+        {
+            System.out.println("\n U rolled a rocket fruit! - 🚀");
+            fruit = "rocket";
+        }
+        else if (randomNumber >= 2001 && randomNumber <= 3000)
+        {
+            System.out.println("\n U rolled a ice fruit! - 🧊");
+            fruit = "ice";
+        }
+        else if (randomNumber >= 3001 && randomNumber <= 3500)
+        {
+            System.out.println("\n U rolled a magma fruit! - 🔥♨️");
+            fruit = "magma";
+        }
+        else if (randomNumber >= 3501 && randomNumber <= 4990)
+        {
+            System.out.println("\n U rolled a buddha fruit! - 🟨👨🪷");
+            fruit = "buddha";
+        }
+        else if (randomNumber >= 4991 && randomNumber <= 5050)
+        {
+            System.out.println("\n U rolled a magnet fruit! - 🧲");
+            fruit = "magnet";
+        }
+        else if (randomNumber >= 5051 && randomNumber <= 5989)
+        {
+            System.out.println("\n U rolled a kitsune fruit! - 🟦🦊");
+            fruit = "kitsune";
+        }
+        else if (randomNumber >= 5990 && randomNumber <= 6000)
+        {
+            System.out.println("\n U rolled a dragon east fruit! - 🐉");
+            fruit = "dragon east";
+        }
+        else if (randomNumber >= 6001 && randomNumber <= 6010)
+        {
+            System.out.println("\n U rolled a dragon west fruit! - 🐲");
+            fruit = "dragon west";
+        }
+        else
+        {
+            System.out.println("U are soo unlucky that the program refuses to work, dont buy a lottery now, and try again later I guss... 😭");
+            fruit = "none 😭";
+        }
+        return fruit;
+    }
+
+    static void showMessage(String fruit)
+    {
+        if(fruit.equals("rocket"))
+        {
+            System.out.println("dont be sad son!⛈️ try again later");
+        }
+        else if(fruit.equals("ice"))
+        {
+            System.out.println("it is a good fruit 🧊, but dont be sad, it cam keep you cool 😎");
+        }
+        else if(fruit.equals("magma"))
+        {
+            System.out.println("if you dont have a magma ❌ and want to do sb hunt 🌊 it is a good one for you 👍, or dont be sad U will also have a day with insane luck!, try later");
+        }
+        else if(fruit.equals("buddha"))
+        {
+            System.out.println("it is a good fruit 👍😎, If you already have one trade it and store it 🪷");
+        }
+        else if(fruit.equals("magnet"))
+        {
+            System.out.println("store it immediatly!!!, its value is insanely high now ♨️🔥");
+        }
+        else if(fruit.equals("kitsune"))
+        {
+            System.out.println("U are lucky, store it and enjoy, have a good day! 😎");
+        }
+        else if(fruit.equals("dragon east"))
+        {
+            System.out.println("damn U are lucky, store it and enjoy 😎🔥");
+        }
+        else if(fruit.equals("dragon west"))
+        {
+            System.out.println("damn man, U better a lottery ticket rn!!! 😎");
+        }
+        else
+        {
+            System.out.println("gg, take rest, U changed the whole system!!, try later ⛈️");
+        }
+    }
+
+    public static void main(String args[])
+    {
+        Random rn = new Random();
+        Sell shop = new Sell(100);
+
+        System.out.println("welcome! rolling a fruit costs $10. type leave any time to stop..."); // I'm not willing to change the price hehehe
+        System.out.println("and another thing, U have $100...");
+
+        while(true)
+        {
+            System.out.print("\nwhat do you want to do? (roll / inv / unstore / leave) : ");
+            String cmd = sc.nextLine().trim().toLowerCase();               // cmd
+
+            if(cmd.equals("roll"))
+            {
+                if(shop.money < 10)
+                {
+                    System.out.println("U dont have enough money to roll 😭");
+                }
+                else
+                {
+                    shop.money -= 10;
+                    System.out.println("money left: $" + shop.money);
+
+                    String fruit = rollFruit(rn);
+                    showMessage(fruit);
+                    shop.sell(fruit);
+                }
+            }
+            else if(cmd.equals("inv"))
+            {
+                shop.showInventory();
+            }
+            else if(cmd.equals("unstore"))
+            {
+                shop.unstore();
+            }
+            else if(cmd.equals("leave"))
+            {
+                System.out.println("cya! U left with $" + shop.money + " and " + shop.count + " stored fruits.");
+                break;
+            }
+            else
+            {
+                System.out.println("shame on you for not entering which is not asked - have some common sence 😤");
+            }
+        }
+
+        sc.close();
+    }
+
+    static class Sell
+    {
+        int money;
+        String[] inventory;
+        int count;
+
+        Sell(int money)
+        {
+            this.money = money;
+            this.inventory = new String[100];
+            this.count = 0;
+        }
+
+        // heheahaha, I'm evil hahahaha
+        int priceOf(String fruit)
+        {
+            if(fruit.equals("rocket"))           return 2;
+            else if(fruit.equals("ice"))         return 5;
+            else if(fruit.equals("magma"))       return 10;
+            else if(fruit.equals("buddha"))      return 20;
+            else if(fruit.equals("magnet"))      return 45;
+            else if(fruit.equals("kitsune"))     return 50;
+            else if(fruit.equals("dragon east")) return 75;
+            else if(fruit.equals("dragon west")) return 75;
+            else                                 return 0;
+        }
+
+        int countOf(String fruit)
+        {
+            int total = 0;
+            for(int i = 0; i < count; i++)
+            {
+                if(inventory[i].equals(fruit)) total++;
+            }
+            return total;
+        }
+
+        // dont blame me if something happens and U dont get to sell or store...
+        void sell(String fruit)
+        {
+            System.out.print("would you like to sell your fruit?, y/n : ");
+            String opt = sc.nextLine().trim().toLowerCase();
+
+            if(opt.equals("y"))
+            {
+                int price = priceOf(fruit);
+                money += price;
+                System.out.println("sold for $" + price + ", you now have $" + money);
+            }
+            else if(opt.equals("n"))
+            {
+                System.out.println("cool, live good bro 😎");
+                System.out.print("would you like to store the fruit U rolled?, y/n : ");
+                String optStore = sc.nextLine().trim().toLowerCase();
+
+                if(optStore.equals("n"))
+                {
+                    System.out.println("k,cya!");
+                }
+                else if(optStore.equals("y"))
+                {
+                    if(count < inventory.length)
+                    {
+                        inventory[count] = fruit;
+                        count++;
+                        System.out.println("cool!");
+                    }
+                    else
+                    {
+                        System.out.println("yo, your inventory is full");
+                    }
+                }
+                else
+                {
+                    System.out.println("why?");
+                }
+            }
+        }
+
+        void showInventory()
+        {
+            System.out.println("\n--- inventory ---"); // 😎
+            System.out.println("money: $" + money);
+
+            if(count == 0)
+            {
+                System.out.println("what U trying?, U dont have any stored fruits yet..😭🤣");
+                return;
+            }
+
+            for(String type : TYPES)
+            {
+                int amount = countOf(type);
+                if(amount == 0) continue;
+                System.out.println(type + " x" + amount);
+            }
+            System.out.println("total stored: " + count + "/" + inventory.length);
+        }
+
+        void unstore()
+        {
+            if(count == 0)
+            {
+                System.out.println("U have nothing stored!");
+                return;
+            }
+
+            showInventory();
+            System.out.print("which fruit do you want to unstore? : ");
+            String fruit = sc.nextLine().trim().toLowerCase();
+
+            int have = countOf(fruit);
+            if(have == 0)
+            {
+                System.out.println("U dont have any " + fruit + " fruit stored.");
+                return;
+            }
+
+            System.out.print("how many? (1 to " + have + ") : ");
+            int amount;
+            try
+            {
+                amount = Integer.parseInt(sc.nextLine().trim());
+            }
+            catch(NumberFormatException e)
+            {
+                System.out.println("that is not a number!🥲, bruh why U like this?");
+                return;
+            }
+
+            if(amount < 1 || amount > have)
+            {
+                System.out.println("U can only unstore between 1 and " + have);
+                return;
+            }
+
+            // dear program, please work
+            int write = 0;
+            int removed = 0;
+            for(int read = 0; read < count; read++)
+            {
+                if(inventory[read].equals(fruit) && removed < amount)
+                {
+                    removed++;
+                }
+                else
+                {
+                    inventory[write] = inventory[read];
+                    write++;
+                }
+            }
+            for(int i = write; i < count; i++)
+            {
+                inventory[i] = null;
+            }
+            count = write;
+
+            System.out.println("unstored " + amount + " " + fruit + " fruit(s), enjoy bruh..");
+
+            System.out.print("do you want to sell them?, y/n : ");
+            String opt = sc.nextLine().trim().toLowerCase();
+            if(opt.equals("y"))
+            {
+                int total = priceOf(fruit) * amount;
+                money += total;
+                System.out.println("sold for $" + total + ", you now have $" + money);
+            }
+            else
+            {
+                System.out.println("ok, they are yours now!"); // imagen learning java and remake this rolling system, just to realise ai is becomming powerful.., lil me
+            }
+        }
+    }
+}
